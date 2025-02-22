@@ -35,13 +35,13 @@ public class UsuarioService implements UserDetailsService{
         System.out.println(usuario.toString());
         return User.builder()
                 .username(usuario.getUsername())
-                .password(usuario.getPassword()) // Asegúrate de que esté encriptada
-                .roles(usuario.getRole()) // Asegúrate de que los roles estén correctamente configurados
+                .password(usuario.getPassword()) // Encriptada
+                .roles(usuario.getRole()) // Roles 
                 .build();
     }
 
     public Usuario registrarUsuario(Usuario usuario) {
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword())); // Encriptar la contraseña antes de guardarla
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword())); // Encriptar la contraseña 
         return usuarioRepository.save(usuario);
     }
 }

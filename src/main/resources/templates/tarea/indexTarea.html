@@ -66,45 +66,51 @@
     
     <div class="container mt-4">
         <h2 class="mb-4">Lista de Tareas</h2>
-        <div class="d-flex justify-content-between mb-3">
-            <a th:href="@{/admin/tareas/crearTarea}" class="btn btn-success">Añadir Tarea</a>
-            <form th:action="@{/admin/tareas/buscar}" method="get" class="d-flex">
-                <input type="text" name="titulo" class="form-control me-2" placeholder="Buscar tarea por título">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-            </form>
-        </div>
+        
+	<div class="d-flex justify-content-between mb-3">
+	    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+	        <a th:href="@{/admin/tareas/crearTarea}" class="btn btn-success">Añadir Tarea</a>
+	    </div>
+	    <form th:action="@{/user/tareas/buscar}" method="get" class="d-flex">
+	        <input type="text" name="titulo" class="form-control me-2" placeholder="Buscar tarea por título">
+	        <button type="submit" class="btn btn-primary">Buscar</button>
+	    </form>
+	</div>
         
         <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Título</th>
-                    <th>Descripción</th>
-                    <th>Fecha Límite</th>
-                    <th>Estado</th>
-                    <th>Proyecto</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="tarea : ${tareas}">
-                    <td th:text="${tarea.id}"></td>
-                    <td th:text="${tarea.titulo}"></td>
-                    <td th:text="${tarea.descripcion}"></td>
-                    <td th:text="${tarea.fecha_limite}"></td>
-                    <td th:text="${tarea.estado}"></td>
-                    <td th:text="${tarea.proyecto.nombre}"></td>
-                    <td>
-                        <a th:href="@{/admin/tareas/editarTarea/{id}(id=${tarea.id})}" 
-                        		class="btn btn-warning">Editar</a>
-                        <a th:href="@{/admin/tareas/eliminarTarea/{id}(id=${tarea.id})}" class="btn btn-danger"
-                           onclick="return confirm('¿Estás seguro de eliminar esta tarea?');">
-                           Eliminar
-                        </a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Fecha Límite</th>
+            <th>Estado</th>
+            <th>Proyecto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="tarea : ${tareas}">
+            <td th:text="${tarea.id}"></td>
+            <td th:text="${tarea.titulo}"></td>
+            <td th:text="${tarea.descripcion}"></td>
+            <td th:text="${tarea.fecha_limite}"></td>
+            <td th:text="${tarea.estado}"></td>
+            <td th:text="${tarea.proyecto.nombre}"></td>
+            <td>
+                <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                    <a th:href="@{/admin/tareas/editarTarea/{id}(id=${tarea.id})}" 
+                       class="btn btn-warning">Editar</a>
+                    <a th:href="@{/admin/tareas/eliminarTarea/{id}(id=${tarea.id})}" 
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Estás seguro de eliminar esta tarea?');">
+                       Eliminar
+                    </a>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
         <a href="/home" class="btn btn-primary">Volver al inicio</a>
     </div>
 </body>

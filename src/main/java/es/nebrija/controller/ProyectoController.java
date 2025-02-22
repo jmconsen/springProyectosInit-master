@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import es.nebrija.model.Proyecto;
 import es.nebrija.model.Tarea;
@@ -58,6 +59,19 @@ public class ProyectoController {
             return "error";
         }
     }
+    
+    @GetMapping("/buscar")
+    public String buscarProyecto(@RequestParam("nombre") String nombre, Model model) {
+        List<Proyecto> proyectos = proyectoService.buscarPorNombre(nombre);
+        Map<Long, Integer> tareasPorProyecto = new HashMap<>();
+        for (Proyecto proyecto : proyectos) {
+            tareasPorProyecto.put(proyecto.getId(), proyecto.getTareas().size());
+        }
+        model.addAttribute("proyectos", proyectos);
+        model.addAttribute("tareasPorProyecto", tareasPorProyecto);
+        return "proyecto/index"; 
+    }
+    
 
 
 }

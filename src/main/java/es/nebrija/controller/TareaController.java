@@ -1,5 +1,7 @@
 package es.nebrija.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,13 @@ public class TareaController {
             model.addAttribute("error", "Ocurrió un error al cargar las tareas");
             return "error";
         }
+    }
+    
+    @GetMapping("/buscar")
+    public String buscarTarea(@RequestParam("titulo") String titulo, Model model) {
+        List<Tarea> tareas = tareaService.buscarPorTitulo(titulo);
+        model.addAttribute("tareas", tareas);
+        return "tarea/indexTarea"; 
     }
 }
 
