@@ -126,9 +126,14 @@
                 <label for="descripcion" class="form-label">Descripción</label>
                 <input type="text" th:field="*{descripcion}" class="form-control" id="descripcion" placeholder="Descripción">
             </div>
+            
             <div class="mb-3">
                 <label for="fecha_limite" class="form-label">Fecha Límite</label>
-                <input type="date" th:field="*{fecha_limite}" class="form-control" id="fecha_limite">
+                <input type="date" th:field="*{fecha_limite}" class="form-control" id="fecha_limite" required>
+                <div class="invalid-feedback" id="fecha_limite_error">
+                    Por favor, ingrese una fecha válida.
+                </div>
+
             </div>
             <div class="mb-3">
                 <label for="estado" class="form-label">Estado</label>
@@ -157,6 +162,21 @@
     </div>
 
     <script>
+    
+        // Validación de la fecha límite
+        document.getElementById('fecha_limite').addEventListener('input', function () {
+            var fechaLimiteInput = this;
+            var fechaLimiteError = document.getElementById('fecha_limite_error');
+            var fechaLimite = new Date(fechaLimiteInput.value);
+            if (fechaLimite.getFullYear() > 9999) {
+                fechaLimiteInput.setCustomValidity('El año no puede ser mayor a 9999.');
+                fechaLimiteError.textContent = 'El año no puede ser mayor a 9999.';
+            } else {
+                fechaLimiteInput.setCustomValidity('');
+                fechaLimiteError.textContent = 'Por favor, ingrese una fecha válida.';
+            }
+        });
+    
         // Bootstrap validation script
         (function () {
             'use strict'

@@ -23,13 +23,15 @@
                 <label for="descripcion" class="form-label">Descripción</label>
                 <input type="text" th:field="*{descripcion}" class="form-control" id="descripcion" placeholder="Descripción">
             </div>
+            
             <div class="mb-3">
-                <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
+                <label for="fecha_inicio" class="form-label">Fecha Inicio</label>
                 <input type="date" th:field="*{fecha_inicio}" class="form-control" id="fecha_inicio" required>
-                <div class="invalid-feedback">
-                    Por favor, ingrese una fecha de inicio.
+                <div class="invalid-feedback" id="fecha_inicio_error">
+                    Por favor, ingrese una fecha válida.
                 </div>
             </div>
+            
             <div class="mb-3">
                 <label for="estado" class="form-label">Estado</label>
                 <select th:field="*{estado}" class="form-select" id="estado" required>
@@ -61,6 +63,21 @@
 
 
     <script>
+    
+        // Validación de la fecha de inicio
+        document.getElementById('fecha_inicio').addEventListener('input', function () {
+            var fechaInicioInput = this;
+            var fechaInicioError = document.getElementById('fecha_inicio_error');
+            var fechaInicio = new Date(fechaInicioInput.value);
+            if (fechaInicio.getFullYear() > 9999) {
+                fechaInicioInput.setCustomValidity('El año no puede ser mayor a 9999.');
+                fechaInicioError.textContent = 'El año no puede ser mayor a 9999.';
+            } else {
+                fechaInicioInput.setCustomValidity('');
+                fechaInicioError.textContent = 'Por favor, ingrese una fecha válida.';
+            }
+        });
+        
         // Bootstrap validation script
         (function () {
             'use strict'
